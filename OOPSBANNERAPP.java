@@ -1,76 +1,84 @@
-public class OOPSBannerApp{
- public static class CharacterPatternMap {
-        private final char character;
-        private final String[] pattern;
+import java.util.HashMap;
+import java.util.Map;
+public class OOPSBannerApp {
 
-        public CharacterPatternMap(char character, String[] pattern) {
-            this.character = character;
-            this.pattern = pattern;
-        }
+    /**
+     * Builds and returns a map containing
+     * ASCII banner patterns for characters.
+     *
+     * @return Map<Character, String[]>
+     */
+    public static Map<Character, String[]> buildCharacterMap() {
 
-        public char getCharacter() {
-            return character;
-        }
+        Map<Character, String[]> patternMap = new HashMap<>();
 
-        public String[] getPattern() {
-            return pattern;
-        }
+        patternMap.put('O', new String[]{
+                "  *****  ",
+                " *     * ",
+                " *     * ",
+                " *     * ",
+                " *     * ",
+                " *     * ",
+                "  *****  "
+        });
+
+        patternMap.put('P', new String[]{
+                "  ****** ",
+                " *     * ",
+                " *     * ",
+                " ******  ",
+                " *       ",
+                " *       ",
+                " *       "
+        });
+
+        patternMap.put('S', new String[]{
+                "  *****  ",
+                " *     * ",
+                " *       ",
+                "  *****  ",
+                "       * ",
+                " *     * ",
+                "  *****  "
+        });
+
+        return patternMap;
     }
 
-    private static String[] getCharacterPattern(char target, CharacterPatternMap[] patterns) {
-        for (CharacterPatternMap map : patterns) {
-            if (map.getCharacter() == target) {
-                return map.getPattern();
+    /**
+     * Renders the banner message using the map.
+     *
+     * @param message text to display
+     * @param patternMap character pattern map
+     */
+    public static void renderBanner(String message, Map<Character, String[]> patternMap) {
+
+        for (int row = 0; row < 7; row++) {
+
+            StringBuilder lineBuilder = new StringBuilder();
+
+            for (char ch : message.toCharArray()) {
+
+                String[] pattern = patternMap.get(ch);
+
+                if (pattern != null) {
+                    lineBuilder.append(pattern[row]).append(" ");
+                }
             }
+
+            System.out.println(lineBuilder.toString());
         }
-        return new String[]{" ", " ", " ", " ", " ", " ", " "};
     }
 
+    /**
+     * Main method – Entry point
+     */
     public static void main(String[] args) {
-        String[] patternO = {
-            "    ***   ",
-            "  **   ** ",
-            " **     **",
-            " **     **",
-            " **     **",
-            "  **   ** ",
-            "    ***   "
-        };
 
-        String[] patternP = {
-            "  ******  ",
-            " **    ** ",
-            " **    ** ",
-            " ******  ",
-            " **       ",
-            " **       ",
-            " **       "
-        };
+        Map<Character, String[]> characterMap = buildCharacterMap();
 
-        String[] patternS = {
-            "  ****** ",
-            " **      ",
-            " **      ",
-            "  *****  ",
-            "       **",
-            "       **",
-            " ******  "
-        };
+        String message = "OOPS";
 
-        CharacterPatternMap[] mappings = {
-            new CharacterPatternMap('O', patternO),
-            new CharacterPatternMap('P', patternP),
-            new CharacterPatternMap('S', patternS)
-        };
-
-        String word = "OOPS";
-
-        for (int i = 0; i < 7; i++) {
-            StringBuilder line = new StringBuilder();
-            for (char c : word.toCharArray()) {
-                line.append(getCharacterPattern(c, mappings)[i]).append("  ");
-            }
-            System.out.println(line.toString());
-        }
+        renderBanner(message, characterMap);
     }
 }
